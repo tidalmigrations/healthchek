@@ -6,4 +6,4 @@ RUN kotlinc src/* -include-runtime -d healthchek.jar
 FROM openjdk:jre-alpine
 WORKDIR /app
 COPY --from=builder /app/healthchek.jar .
-ENTRYPOINT ["java", "-jar", "healthchek.jar"]
+ENTRYPOINT ["java", "-ea", "-jar", "healthchek.jar"]

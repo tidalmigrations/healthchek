@@ -1,18 +1,30 @@
 # healthchek
 
-Small utility to check if the HEAD HTTP request to the specified URL responds
-with the expected HTTP status code. 
+Small utility to check if a specified endpoint is available and (optionally)
+responds with some expected HTTP status code. 
 
 ## Usage
 
 ```
-java -jar healthchek.jar <url> <status>
+java -jar healthchek.jar URL [STATUS]
 ```
 
-Replace `<url>` and `<status>` with appropriate URL to check and the expected HTTP response status code, for example:
+Replace `URL` and `STATUS` with appropriate URL to check and the expected HTTP
+response status code.
+
+For example, the following command will just check that `http://example.com` is
+available:
 
 ```
-java -jar healthchek.jar http://example.com/ 200
+java -jar healthchek.jar http://example.com/
+```
+
+And the following command will check for `http://example.com` availability and
+also will check that the response code in `200`. Please note the `-ea` flag,
+this enables JVM assertions.
+
+```
+java -ea -jar healthchek.jar http://example.com/ 200
 ```
 
 ## Requirements
@@ -66,7 +78,7 @@ It could be either provided as `java` command-line flags:
 java \
     -Dhttp.proxyHost=<http_proxy_host> \
     -Dhttp.proxyPort=<http_proxy_port> \
-    -jar healthchek.jar <url> <status>
+    -ea -jar healthchek.jar <url> <status>
 ```
 
 Alternatively, it could be provided using the `JAVA_TOOL_OPTIONS` environment
@@ -74,7 +86,7 @@ variable, for example:
 
 ```
 export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=<host> -Dhttp.proxyPort=<port>"
-java -jar healthchek.jar <url> <status>
+java -ea -jar healthchek.jar <url> <status>
 ```
 
 ## Use as Docker container

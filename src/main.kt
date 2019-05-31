@@ -1,30 +1,48 @@
-import java.lang.Integer.parseInt
 import java.net.HttpURLConnection
+import java.net.MalformedURLException
 import java.net.URL
+import java.net.UnknownHostException
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    if (args.size != 2) {
-        usage()
+    try {
+        require(args.size in 1..2)
+
+        val url = URL(args[0])
+        val expectedStatus = try {
+            args[1].toInt()
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            null
+        }
+
+        with(url.openConnection() as HttpURLConnection) {
+            connectTimeout = 5000
+            readTimeout = 5000
+            requestMethod = "HEAD"
+
+            val actualStatus = responseCode
+            expectedStatus?.let {
+                assert(expectedStatus == actualStatus) {
+                    "expected HTTP status $expectedStatus, got $actualStatus"
+                }
+            }
+        }
+    } catch (e: Throwable) {
+        when (e) {
+            is IllegalArgumentException,
+            is MalformedURLException -> usage()
+            is UnknownHostException -> die("IP address of a host could not be determined")
+            else -> die("${e.message}")
+        }
     }
+    println("OK")
+}
 
-    val url = URL(args[0])
-    val expectedStatus = parseInt(args[1])
-
-    val connection = url.openConnection() as HttpURLConnection
-    connection.requestMethod = "HEAD"
-
-    val status = connection.responseCode
-
-    if (status != expectedStatus) {
-        System.err.println("$url : expected $expectedStatus, got $status")
-        exitProcess(1)
-    }
-
-    println("$url : OK")
+fun die(message: String) {
+    System.err.println(message)
+    exitProcess(1)
 }
 
 fun usage() {
-    System.err.println("Usage:\n  java -jar healthchek.jar <url> <status>")
-    exitProcess(1)
+    die("Usage: java -jar healthchek.jar URL [STATUS]")
 }

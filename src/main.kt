@@ -9,11 +9,7 @@ fun main(args: Array<String>) {
         require(args.size in 1..2)
 
         val url = URL(args[0])
-        val expectedStatus = try {
-            args[1].toInt()
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            null
-        }
+        val expectedStatus = args.getOrNull(1)?.toInt()
 
         with(url.openConnection() as HttpURLConnection) {
             connectTimeout = 5000

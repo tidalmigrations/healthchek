@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
         when (e) {
             is IllegalArgumentException,
             is MalformedURLException -> usage()
-            is UnknownHostException -> die("IP address of a host could not be determined")
+            is UnknownHostException -> die("${e.message}: IP address of a host could not be determined")
             else -> die("${e.message}")
         }
     }

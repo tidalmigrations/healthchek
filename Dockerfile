@@ -1,9 +1,8 @@
-FROM zenika/kotlin:alpine AS builder
-WORKDIR /app
-COPY src /app/src
-RUN kotlinc src/* -include-runtime -d healthchek.jar
+FROM --platform=$BUILDPLATFORM openjdk:8-jdk-slim AS builder
+COPY . /
+RUN ./gradlew --no-daemon distTar
 
-FROM openjdk:jre-alpine
-WORKDIR /app
-COPY --from=builder /app/healthchek.jar .
-ENTRYPOINT ["java", "-ea", "-jar", "healthchek.jar"]
+FROM openjdk:8-jre-alpine
+COPY --from=builder /app/build/distributions/healthchek.tar .
+RUN tar -xf healthchek.tar
+ENTRYPOINT ["/healthchek/bin/healthchek"]

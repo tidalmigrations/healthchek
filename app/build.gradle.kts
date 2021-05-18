@@ -36,4 +36,8 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass.set("healthchek.AppKt")
+
+    applicationDefaultJvmArgs = listOf("-ea")
 }
+
+application.applicationName = "healthchek"

@@ -97,3 +97,15 @@ To use `healthchek` utility as a Docker container, run the following:
 docker buildx build -t healthchek .x
 docker container run -it --rm healthchek <url> <status>
 ```
+
+## Deploying to production
+
+Note: Tidal tools pulls the `latest` tag so updating that image will release it to be used by tidal tools. Tidal tools will only download the new image isn't already present on the system.
+
+To release to production merge any changes to the master branche and that will result in a new image being deployed with the `latest` tag and in use in production.
+
+You can see the [trigger here that is configured to deploy](https://console.cloud.google.com/cloud-build/triggers/edit/1e85456b-fa93-4e93-8d90-ae084bb35458?project=tidal-1529434400027)
+
+The [cloudbuild.yaml](./cloudbuild.yaml) file specifies the build steps.
+
+From the same Cloud Build section in the GCP Console you can also see the status of the builds.

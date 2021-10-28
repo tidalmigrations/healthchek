@@ -94,6 +94,6 @@ java -ea -jar healthchek.jar <url> <status>
 To use `healthchek` utility as a Docker container, run the following:
 
 ```
-docker build -t healthchek .
+docker buildx build -t healthchek .x
 docker container run -it --rm healthchek <url> <status>
 ```

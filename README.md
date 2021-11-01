@@ -102,7 +102,7 @@ docker container run -it --rm healthchek <url> <status>
 
 Note: Tidal tools pulls the `latest` tag so updating that image will release it to be used by tidal tools. Tidal tools will only download the new image isn't already present on the system.
 
-To release to production merge any changes to the master branche and that will result in a new image being deployed with the `latest` tag and in use in production.
+To release to production merge any changes to the master branch and that will result in a new image being deployed with the `latest` tag and in use in production.
 
 You can see the [trigger here that is configured to deploy](https://console.cloud.google.com/cloud-build/triggers/edit/1e85456b-fa93-4e93-8d90-ae084bb35458?project=tidal-1529434400027)
 

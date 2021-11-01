@@ -34,4 +34,27 @@ WORKDIR /
 # Adding SQL Server tools to $PATH
 ENV PATH=$PATH:/opt/mssql-tools/bin
 
+# Oracle client
+ENV LD_LIBRARY_PATH=/lib
+
+ARG ORACLE_INSTALLER=instantclient-basic-linux.x64-21.3.0.0.0.zip
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/213000/${ORACLE_INSTALLER} && \
+    unzip ${ORACLE_INSTALLER} && \
+    cp -r instantclient_21_3/* /lib && \
+    rm -rf ${ORACLE_INSTALLER} && \
+    apk add libaio && \
+    apk add libaio libnsl libc6-compat
+    cd /lib && \
+    ln -s /lib64/* /lib && \
+    ln -s libc.so.6 /lib/libresolv.so.2
+
+ARG SQLPLUS_INSTALLER=instantclient-sqlplus-linux.x64-21.3.0.0.0.zip
+
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/213000/${SQLPLUS_INSTALLER} && \
+    unzip ${SQLPLUS_INSTALLER} && \
+    cp -r instantclient_21_3/* /lib && \
+    rm -rf ${SQLPLUS_INSTALLER}
+
+ENV PATH=$PATH:/lib
+
 ENTRYPOINT ["/healthchek/bin/healthchek"]
